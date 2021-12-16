@@ -7,84 +7,105 @@ let draws = 0;
 // Creates computers choice for Rock, Paper, Scissors
 
 function computerPlay(){
-    let choices = ["Rock", "Paper", "Scissors"];
+    let choices = ['ROCK', 'PAPER', 'SCISSORS'];
     let randomNum = Math.floor(Math.random()*choices.length);
     let computerChoice =  choices[randomNum];
     return computerChoice;
 }
 
-//Creates user choice for RPS
+//creates image to match user choice
 
-function playerChoice(){
-    let choice = prompt("Choose Rock, Paper or Scissors:");
-    return choice;
+function choiceImg(clickInput){
+    var img1 = document.getElementById('image1');
+    if (clickInput === 'ROCK'){
+        img1.src = 'images/rock.jpg';
+    } else if (clickInput === 'PAPER'){
+        img1.src = 'images/paper.jpg';
+    } else if (clickInput === 'SCISSORS'){
+        img1.src = 'images/scissors.jpg';
+    } else{
+
+    }
+    
 }
 
-// Creates function to play a game of RPS and add counts to scores
+//creates image to match computer choice
 
-function rpsGame(){
-    let playerSelection = playerChoice();
-    let computerSelection = computerPlay();
-    if (playerSelection.toUpperCase() === "ROCK"){
-        if (computerSelection.toUpperCase() ==="ROCK"){
-            draws = ++draws;
-            console.log("Draw!");
-        } else if (computerSelection.toUpperCase() === "PAPER"){
-            computerScore = ++computerScore;
-            console.log("You lose!");
-        } else {
-            playerScore = ++playerScore;
-            console.log("You won!");
-        }
-    } else if (playerSelection.toUpperCase() === "PAPER"){
-        if (computerSelection.toUpperCase() ==="ROCK"){
-            playerScore = ++playerScore;
-            console.log("You won!");
-        } else if (computerSelection.toUpperCase() === "PAPER"){
-            draws = ++draws;
-            console.log("Draw!");
-        } else {
-            computerScore = ++computerScore;
-            console.log("You lose!");
-        }
-    } else if (playerSelection.toUpperCase() === "SCISSORS"){
-        if (computerSelection.toUpperCase() ==="ROCK"){
-            computerScore = ++computerScore;
-            console.log("You lose!");
-        } else if (computerSelection.toUpperCase() === "PAPER"){
-            playerScore = ++playerScore;
-            console.log("You won!");
-        } else {
-            draws = ++draws;
-            console.log("Draw!");
-        }
-
+function computerImg(compPlay){
+    var img2 = document.getElementById('image2')
+    if (compPlay === 'ROCK'){
+        img2.src = 'images/rock.jpg';
+    } else if (compPlay === 'PAPER'){
+        img2.src = 'images/paper.jpg';
+    } else if (compPlay === 'SCISSORS'){
+        img2.src = 'images/scissors.jpg';
     } else{
-        return("IDK what happened, lemme find out");
+
     }
 }
 
-//Game function that runs RPS game until a user/computer score of 5 is obtained
+//Game function that compares user choice and computer choice
 
-function game(){
-    while (true){
-    if (playerScore < 5 && computerScore < 5){
-        rpsGame();
-    } else if (playerScore === 5){
-        console.log("You are pretty good at this, you won five times!");
-        console.log("Wins: " + playerScore);
-        console.log("Loses: " + computerScore);
-        console.log("Draws: " + draws);
-        break;
+function newGame(choice){
+    var compPlay = computerPlay();
+    if (choice === 'ROCK'){
+        choiceImg(choice);
+        if (compPlay === 'PAPER'){
+            computerImg(compPlay);
+            computerScore = ++computerScore;
+        } else if (compPlay === 'SCISSORS'){
+            computerImg(compPlay);
+            playerScore = ++playerScore;
+        } else{
+            computerImg(compPlay);
+            draws = ++draws;
+        }
+    } else if (choice === 'PAPER'){
+        choiceImg(choice);
+        if (compPlay === 'ROCK'){
+            computerImg(compPlay);
+            playerScore = ++playerScore;
+        } else if (compPlay === 'SCISSORS'){
+            computerImg(compPlay);
+            computerScore = ++computerScore;
+        } else{
+            computerImg(compPlay);
+            draws = ++draws;
+        }
+    } else if (choice === 'SCISSORS'){
+        choiceImg(choice);
+        if (compPlay === 'ROCK'){
+            computerImg('ROCK');
+            computerScore = ++computerScore;
+        } else if (compPlay === 'PAPER'){
+            computerImg('PAPER');
+            playerScore = ++playerScore;
+        } else{
+            computerImg('SCISSORS');
+            draws = ++draws;
+
+        }
+    }
+    keepScore();
+}
+
+//Keeps score and resets page once score limit is reached
+
+function keepScore(){
+    document.getElementById('pScore').innerText = playerScore;
+    document.getElementById('cScore').innerText = computerScore;
+    document.getElementById('pDraws').innerText = draws;
+
+    if (playerScore === 5){
+        window.alert("WIN!!!!");
+        window.location.reload();
     } else if (computerScore === 5){
-        console.log("You've lost five times already! Try another game!");
-        console.log("Wins: " + playerScore);
-        console.log("Loses: " + computerScore);
-        console.log("Draws: " + draws);
-        break;
+        window.alert("LOST!!!");
+        window.location.reload();
+    } else if (draws === 10){
+        window.alert("TOO MANY DRAWS!!!!!");
+        window.location.reload();
     } else{
-        console.log("I'm not sure who won...")
-        break;
+
     }
-}
 }
